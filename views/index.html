@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/parrot.png" type="image/x-icon">
+    <title>Rio Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/js/all.min.js" integrity="sha384-..."
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+        <link rel="stylesheet" href="/css/indexStyles.css">
+    
+    </head>
+
+<body>
+  <div class="main-container" id="login-form">
+    <form>
+        <div class="form-group">  
+            <img src="/images/parrot.png" class="parrotImage">
+            <h3>
+                Rio Chat
+            </h3>   
+            <div class="email-box">
+             <div class="emailIc">
+                <i class='bx bxs-envelope' style='color:rgba(12, 53, 158); font-size: 22px;' ></i>
+             </div>
+            <input type="email" class="form-control emailIcon" id="email" name="email" required placeholder="Email">
+            </div>
+            <div class="password-box">
+                <div class="passwordIc">
+                    <i class='bx bxs-lock-alt' style='color:rgba(12, 53, 158); font-size: 26px;' ></i>
+                 </div>
+            <input type="password" class="form-control passwordIcon" id="password" name="password" required placeholder="password">
+            </div>
+            <button type="button" class="btn" onclick="loginForm()">LOGIN</button>
+            <small><a href="/forgotpassword" class="forgotpassword" >Forgot Password?</a></small>           
+            <small><a href="#" class="account" onclick="showSignupForm()">Create account <i class='bx bxs-chevron-right arrow' style='color:#ffffff; font-size: 20px;'></i> </a></small>
+        </div>
+    </form>
+  </div>
+
+  <div class="main-container" id="signup-form" style="display: none;">
+    <form action="/signUp" method="POST">
+        <div class="form-group">
+            <h3>
+                Sign Up
+            </h3>
+            <div class="userName-box">
+                <div class="userNameIc">
+                    <i class='bx bxs-user' style='color:rgba(12, 53, 158); font-size: 24px;' ></i>
+                 </div>
+            </div>
+            <input type="text" class="form-control userName" id="name" name ="name" required placeholder="Name">
+
+            <div class="email-box">
+                <div class="emailIc">
+                   <i class='bx bxs-envelope' style='color:rgba(12, 53, 158); font-size: 22px;' ></i>
+                </div>
+               <input type="email" class="form-control emailIcon" id="signup-email" name="email" required placeholder="Email">
+               </div>
+
+               <div class="password-box">
+                <div class="passwordIc">
+                    <i class='bx bxs-lock-alt' style='color:rgba(12, 53, 158); font-size: 26px;' ></i>
+                 </div>
+                 <input type="password" class="form-control passwordIcon" id="signup-password" name="password" required placeholder="password">
+               </div>
+
+            <div class="phone-box">
+                <div class="phoneIc">
+                    <i class='bx bxs-phone' style='color:rgba(12, 53, 158); font-size: 26px;' ></i>
+                </div>
+                <input type="tel" class="form-control telIcon" id="signup-tel" name="phoneNumber" required placeholder="Phone Number">
+            </div>           
+            <button type="submit" class="btn">Sign Up</button>
+        </div>
+    </form>
+
+    <small><a href="#" class="account" onclick="showLoginForm()">Back to Login <i class='bx bxs-chevron-right arrow' style='color:#ffffff; font-size: 20px;'></i></a></small>
+</div>
+<script>
+    function showSignupForm() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('signup-form').style.display = 'block';
+    }
+
+    function showLoginForm() {
+        document.getElementById('signup-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+  }
+
+</script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+
+</html>

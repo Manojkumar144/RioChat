@@ -1,0 +1,127 @@
+body {
+    height: 100vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; 
+    color:white;
+    font-family: "Poppins", sans-serif;
+
+}
+.parrotImage{
+    height:50px;
+    display: flex;
+    margin:auto;
+}
+
+.main-container {
+    width: 280px;
+    height:auto;
+    padding: 20px;
+    border-radius:6px;
+    backdrop-filter: blur(10px);
+    background-color:#0C359E;
+    border :2px solid rgba(255,255,255,.2);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    border-radius:18px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.btn {
+   width: 100%;
+   background-color: white;
+   color:#211C6A;
+   border-radius:18px;
+}
+.btn:hover{
+    background-color: #FF487E;
+}
+input img{
+    height:24px;
+}
+
+.form-control.emailIcon {
+    padding-left: 40px;
+}
+
+.form-control.passwordIcon {
+    padding-left: 40px; 
+}
+
+.form-control.userName {
+    padding-left: 40px;
+}
+
+.form-control.telIcon {
+    padding-left: 40px;
+}
+
+h3{
+    text-align:center;
+    margin-bottom: 20px;
+}
+
+small{
+    margin-top:20px;
+    display: flex;
+    justify-content: center;
+}
+.arrow{
+    position: absolute;
+    width:60px;
+}
+
+.account, .forgotpassword{
+    color:white;
+text-decoration: none;
+cursor: pointer;
+}
+
+.account:hover, .forgotpassword:hover{
+    color:#FF487E;
+}
+
+
+.emailIc{
+    position: absolute;
+    margin:6px;
+    padding-left: 10px;
+}
+
+.bx{
+height: 40px;
+width:10px;
+}
+
+input{
+    outline: none;
+}
+
+.passwordIc{
+    position: absolute;
+    margin:4px;
+    padding-left: 10px;
+}
+.userNameIc{
+    position: absolute;
+    margin:6px;
+    padding-left: 10px;
+}
+
+.phoneIc{
+    position: absolute;
+    margin:6px;
+    padding-left: 10px;
+}
