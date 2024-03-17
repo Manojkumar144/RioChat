@@ -3,11 +3,19 @@ dotenv.config()
 const path = require ('path');
 const express = require('express');
 const sequelize = require('./util/database');
+const cors = require('cors');
+
 
 const app = express();
 const port = process.env.PORT||3000;
 
 app.set('views', 'views');
+
+app.use(
+    cors({
+        origin:"*",
+    })
+)
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
