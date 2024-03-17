@@ -48,3 +48,46 @@ exports.postAddUser = async (req, res, next) => {
       res.status(500).send('Internal Server Error');
     }
   };
+
+//Check the exisitng users
+exports.postLoginUser = async (req, res, next) => {
+    console.log('Received login form data:', req.body);
+    const { email, password } = req.body;
+  
+    try {
+      // Check if the user with the given email exists
+      const user = await User.findOne({
+        where: { email: email }
+      });
+  
+      if (!user) {
+        // User not found
+        return res.status(404).send(`
+          <script>
+            alert("User does not exist, Please sign up!");
+            window.location.href = '/';
+          </script>
+        `);
+      }
+      
+      const isPassword = await bcrypt.compare(password, user.password);
+  
+      // Check if the provided password matches the stored password
+      if (!isPassword) {
+        // Password doesn't match
+        return res.status(401).send(`
+          <script>
+            alert("Incorrect password, please try again!");
+            window.location.href = '/';
+          </script>
+        `);
+      }
+  
+      // Password is valid, user is authenticated
+      console.log('Successfully logged in');
+      res.status(200).json({success: true, message:`User Logged in succesfully`});
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
