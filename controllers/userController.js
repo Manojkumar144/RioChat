@@ -1,5 +1,12 @@
 const User = require('../models/user');
 const bcrypt =require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+//encrypting the id of the user using jwt 
+function generateToken(id)
+{
+   return jwt.sign({userId :id}, process.env.ACCESS_TOKEN_SECRET);
+}
 
 //Add user details to user table
 exports.postAddUser = async (req, res, next) => {
@@ -64,7 +71,7 @@ exports.postLoginUser = async (req, res, next) => {
         // User not found
         return res.status(404).send(`
           <script>
-            alert("User does not exist, Please sign up!");
+            alert("User not found, Please sign up!");
             window.location.href = '/';
           </script>
         `);
@@ -85,7 +92,7 @@ exports.postLoginUser = async (req, res, next) => {
   
       // Password is valid, user is authenticated
       console.log('Successfully logged in');
-      res.status(200).json({success: true, message:`User Logged in succesfully`});
+      res.status(200).json({success: true, message:`User Logged in succesfully`,accessToken: generateToken(user.id)});
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Internal Server Error' });
