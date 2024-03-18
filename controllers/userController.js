@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt =require('bcrypt');
 const jwt = require('jsonwebtoken');
+const path =require('path');
 
 //encrypting the id of the user using jwt 
 function generateToken(id)
@@ -98,3 +99,20 @@ exports.postLoginUser = async (req, res, next) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+
+  exports.getUserDetails = async (req, res) => {
+    try{
+      const userDetails = await User.findAll({
+          order: ["name"]   
+      })
+      res.status(200).json({userDetails})     
+  } catch (err){
+  console.log(err)
+  res.status(500).json(err)
+  }
+    };
+
+    exports.getChat = (req, res) => {
+      res.sendFile(path.join(__dirname, '../views', '/chat.html'));
+    };
+    

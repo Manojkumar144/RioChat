@@ -109,7 +109,7 @@
 axios.post('/dashboard',loginDetails).then(response => {
             alert(response.data.message)
             localStorage.setItem('accessToken',response.data.accessToken)
-            window.location.href = "/dashboard"
+            window.location.href = "/chat"
     }).catch(err => {
         console.log(JSON.stringify(err))
         document.body.innerHTML += `<div style="color:red;">${err.message} <div>`;
