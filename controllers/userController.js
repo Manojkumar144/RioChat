@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Chat = require('../models/chat');
 const bcrypt =require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path =require('path');
@@ -93,26 +94,67 @@ exports.postLoginUser = async (req, res, next) => {
   
       // Password is valid, user is authenticated
       console.log('Successfully logged in');
-      res.status(200).json({success: true, message:`User Logged in succesfully`,accessToken: generateToken(user.id)});
+      res.status(200).json({success: true, message:`User Logged in succesfully`,accessToken: generateToken(user.id),name:user.name});
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
 
-  exports.getUserDetails = async (req, res) => {
+exports.getUserDetails = async (req, res) => {
     try{
       const userDetails = await User.findAll({
           order: ["name"]   
       })
-      res.status(200).json({userDetails})     
+      res.status(200).json({userDetails,accessToken: generateToken(userDetails.id)})     
   } catch (err){
   console.log(err)
   res.status(500).json(err)
   }
     };
 
-    exports.getChat = (req, res) => {
-      res.sendFile(path.join(__dirname, '../views', '/chat.html'));
-    };
+// to get the chat page
+ exports.getChat = (req, res) => {
+    res.sendFile(path.join(__dirname, '../views', '/chat.html'));
+ };
     
+  //store the  chat message in the db
+  exports.postChatMessage = async (req, res, next) => {
+    const { chat } = req.body;
+    console.log("Inside the post chat message....");
+    console.log("req....", req.body);
+  
+    try {
+      // Create message
+      const createdMessage = await Chat.create({
+        userId: req.user.id,
+        name: req.user.name,
+        message: chat
+      });
+  
+      if (!createdMessage) {
+        return res.status(404).send("Error creating message");
+      }
+  
+      // Return success response
+      return res.status(200).send("Message added successfully");
+    } catch (err) {
+      console.error("Error creating message:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+  };
+  
+
+//api to fetch chat messages;
+exports.getChatMessages = async (req, res) => {
+  try{
+    console.log("inside the getChatMessages");
+    const chatMessages = await Chat.findAll({
+        order: ["createdAt"]   
+    })
+    res.status(200).json({chatMessages:chatMessages})     
+} catch (err){
+console.log(err)
+res.status(500).json(err)
+}
+  };

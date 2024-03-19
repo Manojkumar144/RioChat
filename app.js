@@ -4,6 +4,8 @@ const path = require ('path');
 const express = require('express');
 const sequelize = require('./util/database');
 const cors = require('cors');
+const User = require('./models/user');
+const Chat = require('./models/chat');
 
 
 const app = express();
@@ -24,6 +26,8 @@ app.use(express.json());
 
 app.use('/', require('./routes/user'));
 
+User.hasMany(Chat);
+Chat.belongsTo(User);
 
 app.get('/', async (req, res) => {
   try {

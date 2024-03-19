@@ -100,7 +100,6 @@
 
     console.log("email...", email);
     console.log("password...", password);
-
     const loginDetails={
         email:email,
         password:password
@@ -108,7 +107,7 @@
 
 axios.post('/dashboard',loginDetails).then(response => {
             alert(response.data.message)
-            localStorage.setItem('accessToken',response.data.accessToken)
+            localStorage.setItem('accessToken',response.data.accessToken);
             window.location.href = "/chat"
     }).catch(err => {
         console.log(JSON.stringify(err))

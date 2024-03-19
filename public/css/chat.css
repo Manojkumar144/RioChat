@@ -1,21 +1,109 @@
-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  th, td {
-    text-align: left;
-    padding: 8px;
-  }
-  
-  tr:nth-child(even) {background-color: #8CABFF;}
-  tr:nth-child(odd) {background-color: #4FC0D0;}
+ .chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #8CABFF;
+  padding: 20px;
+  height: 100vh; /* Adjust height as needed */
+}
 
-.groupchat{
-        display: flex;
-        margin:auto;
-        margin-top:100px;
-        width:300px;
-        height:auto;
-        overflow: auto;
- }
+.group-chat-heading {
+  margin-bottom: 20px;
+}
+
+.groupchat {
+  width: 100%;
+  max-height: 200px; /* Limit the height of the group chat area */
+  overflow-y: auto;
+  background-color: #fff; /* White background for group chat area */
+  border-radius: 8px;
+}
+
+#myTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#myTable th, #myTable td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd; /* Border between table rows */
+}
+
+#myTable th {
+  background-color: #4FC0D0;
+  color: #fff;
+}
+
+#messages {
+  width: 100%;
+  max-height: 400px; /* Limit the height of the messages container */
+  overflow-y: auto;
+  margin-top: 20px;
+  background-color: #fff; /* White background for messages area */
+  border-radius: 8px;
+}
+
+.chat-form-container {
+  width: 100%;
+  margin-top: 20px;
+}
+
+#chatForm {
+  display: flex;
+  align-items: center;
+}
+
+#chatInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#chatInput:focus {
+  outline: none;
+  border-color: #4FC0D0;
+}
+
+#chatForm button {
+  padding: 8px 16px;
+  background-color: #4FC0D0;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#chatForm button:hover {
+  background-color: #389bbd;
+}
+
+/* Styling for table rows */
+#myTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#myTable tr:nth-child(odd) {
+  background-color: #ddd;
+}
+
+
+.input-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.send-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
