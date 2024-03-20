@@ -34,7 +34,7 @@ async function showUserDetails() {
         table.appendChild(tbody);
 
         // Show chat messages
-        await showChatMessage();
+        await fetchAndDisplayNewChatMessages();
 
         // Set up chat message form
         setupChatForm();
@@ -60,46 +60,73 @@ async function setupChatForm() {
             document.getElementById('chatInput').value = '';
 
             // Show newly added message immediately
-            await showChatMessage();
+            await fetchAndDisplayNewChatMessages();
         } catch (error) {
             console.error('Error sending chat message:', error.message);
         }
     });
 }
 
-async function showChatMessage() {
+async function fetchAndDisplayNewChatMessages() {
     try {
-        console.log("Inside the showChatMessage function...");
+        console.log("Fetching new chat messages...");
 
-        // Fetch chat messages from the server
-        const response = await axios.get('/chatmessage');
-        const chatMessages = response.data.chatMessages;
+        // Fetch last stored message ID from local storage
+        const lastStoredMessageId = localStorage.getItem('lastMessageId');
 
-        // Reference to the messages container
-        const messagesContainer = document.getElementById('messages');
-        console.log("Show Chat messages....", chatMessages);
-
-        // Clear existing chat messages
-        const messages = document.getElementById('messages');
-        messages.innerHTML = '';
-
-        // Loop through chat messages and display username and message
-        chatMessages.forEach(chat => {
-            const username = chat.name; // Assuming the username property exists in the chat object
-            const message = chat.message;
-
-            const ul = document.createElement('ul');
-            const li = document.createElement('li');
-            li.innerHTML = `${username}: ${message}`;
-
-            ul.appendChild(li);
-            messages.appendChild(ul);
-
-            console.log(`${username}: ${message}`);
+        // Fetch new chat messages since the last stored message
+        const response = await axios.get('/chatmessage', {
+            params: { lastMessageId: lastStoredMessageId }
         });
-         // Scroll to the bottom of the messages container
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        const newChatMessages = response.data.chatMessages;
+
+        // Combine stored messages and new messages
+        let allChatMessages = [];
+        const storedChatMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+        allChatMessages = storedChatMessages.concat(newChatMessages);
+
+        console.log("all chat messages", allChatMessages);
+
+        // Ensure only the most recent 10 messages are stored
+        const maxStoredMessages = 10;
+        if (allChatMessages.length > maxStoredMessages) {
+            const excessMessagesCount = allChatMessages.length - maxStoredMessages;
+            allChatMessages.splice(0, excessMessagesCount);
+        }
+
+        // Update last stored message ID in local storage
+        if (newChatMessages.length > 0) {
+            const lastMessageId = newChatMessages[newChatMessages.length - 1].id;
+            localStorage.setItem('lastMessageId', lastMessageId);
+        }
+
+        // Store all chat messages in local storage for future use
+        localStorage.setItem('chatMessages', JSON.stringify(allChatMessages));
+
+        // Display all messages
+        displayChatMessages(allChatMessages);
     } catch (error) {
-        console.error("Error fetching chat messages:", error);
+        console.error("Error fetching and displaying new chat messages:", error);
     }
+}
+
+function displayChatMessages(chatMessages) {
+    const messagesContainer = document.getElementById('messages');
+    messagesContainer.innerHTML = '';
+
+    chatMessages.forEach(chat => {
+        const username = chat.name;
+        const message = chat.message;
+
+        const ul = document.createElement('ul');
+        const li = document.createElement('li');
+        li.innerHTML = `${username}: ${message}`;
+
+        ul.appendChild(li);
+        messagesContainer.appendChild(ul);
+    });
+
+    // Scroll to the bottom of the messages container
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
