@@ -14,13 +14,15 @@
         <link rel="stylesheet" href="/css/chat.css">   
     </head>
 <body>
-
   <div class="chat-container">
-    <h2 class="group-chat-heading">Group Chat</h2>
     <div class="groupchat">
+  
         <table id="myTable">
+
             <!-- Table content will be dynamically generated -->
         </table>
+      <button class="addgroup-btn" onclick="openNewPage()"><i class='bx bx-plus-circle' style='color:rgba(12, 53, 158); font-size: 36px;'></i></button>
+
     </div>
 
     <div id="messages" class="messages-container">
@@ -41,6 +43,8 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</script>
 <script src="js/chat.js">
 
 </script>

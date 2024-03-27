@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const Chat = require('../models/chat');
+const Group = require('../models/group');
+const GroupMember = require('../models/groupMembers');
 const bcrypt =require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path =require('path');
@@ -103,33 +105,55 @@ exports.postLoginUser = async (req, res, next) => {
 
 exports.getUserDetails = async (req, res) => {
     try{
-      const userDetails = await User.findAll({
+      const { groupId } = req.query;
+
+      const groupDetails = await Group.findOne({
+        where: { groupId: groupId }
+    });
+
+      const userDetails = await GroupMember.findAll(
+        {where: { groupId: groupId},
+            order: ["createdAt"]   
+        }
+      )
+     
+      const userIds = userDetails.map(userDetail => userDetail.userId);
+
+      const groupName = groupDetails ? groupDetails.groupName : "Unknown Group";
+
+      // Fetch users corresponding to userIds
+      const users = await User.findAll({
+          where: { id: userIds },
           order: ["name"]   
-      })
-      res.status(200).json({userDetails,accessToken: generateToken(userDetails.id)})     
+      });
+
+      res.status(200).json({groupName,users,accessToken: generateToken(users.id)})     
   } catch (err){
   console.log(err)
   res.status(500).json(err)
   }
     };
 
-// to get the chat page
+
+ // to  get the chat page
  exports.getChat = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views', '/chat.html'));
- };
-    
+  res.sendFile(path.join(__dirname, '../views', '/home.html'));
+};
+
   //store the  chat message in the db
   exports.postChatMessage = async (req, res, next) => {
-    const { chat } = req.body;
+    const { chat,groupId } = req.body;
     console.log("Inside the post chat message....");
     console.log("req....", req.body);
+    console.log("groupId.....",req.groupId);
   
     try {
       // Create message
       const createdMessage = await Chat.create({
         userId: req.user.id,
         name: req.user.name,
-        message: chat
+        message: chat,
+        groupId:groupId
       });
   
       if (!createdMessage) {
@@ -149,12 +173,20 @@ exports.getUserDetails = async (req, res) => {
 exports.getChatMessages = async (req, res) => {
   try{
     console.log("inside the getChatMessages");
-    const chatMessages = await Chat.findAll({
+    const groupId = req.query.groupId;
+    console.log("the groupId in the getChat messages....",groupId );
+    const chatMessages = await Chat.findAll({where: { 
+      groupId: groupId},
         order: ["createdAt"]   
     })
+    console.log(" all the chat messages...",chatMessages);
     res.status(200).json({chatMessages:chatMessages})     
 } catch (err){
 console.log(err)
 res.status(500).json(err)
 }
   };
+
+
+ 
+  

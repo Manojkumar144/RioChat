@@ -18,6 +18,6 @@ router.get('/chat', userController.getChat);
 router.post('/chat',authenticateMiddleware.authenticateToken,userController.postChatMessage);
 
 //api to get the chat messages of the user 
-router.get('/chatmessage', userController.getChatMessages);
+router.get('/chatmessage',authenticateMiddleware.authenticateToken, userController.getChatMessages);
 
 module.exports = router;

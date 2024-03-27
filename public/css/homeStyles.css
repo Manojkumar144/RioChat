@@ -1,0 +1,56 @@
+
+.chatContainer{
+    margin-top:10px;
+    padding-top:10px;
+    padding-left:10px;
+    padding-bottom:10px;
+    display:flex;
+    flex-direction:row;
+    border-radius:4px;
+  }
+  .images{
+    border-radius:50px;
+    border: 1px solid grey;
+    height: 50px;
+    width:50px;
+  }
+  
+  .groupName{
+    padding-left:10px;
+  }
+  
+  .chatContainer:hover{
+    background-color:#EEEEEE;
+  }
+  
+  .heading-container{
+    margin-top:10px;
+    padding-top:10px;
+    padding-left:10px;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    margin-bottom:10px;
+  }
+  
+  .searchInput{
+    width: 98%; 
+    height:30px;
+    border-radius: 10px;
+    margin-right:10px;
+    padding-left:20px;
+    padding: 20px;
+  }
+  
+  .addgroup-btn{
+    height:30px;
+    width:30px;
+    margin-right: 20px;
+    border: none;
+    background-color: transparent;
+  }
+
+  body{
+    padding-left:20px ;
+    padding-right: 20px;
+  }

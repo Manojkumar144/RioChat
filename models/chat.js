@@ -12,6 +12,9 @@ const ChatMessage = sequelize.define('ChatMessage', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
+  groupId: {
+    type: Sequelize.INTEGER
+  },
   name: {
     type: Sequelize.STRING,
     allowNull: false,  

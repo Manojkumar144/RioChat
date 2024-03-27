@@ -107,3 +107,17 @@ input[type="text"] {
   border: none;
   cursor: pointer;
 }
+
+.addgroup-btn{
+  height:30px;
+  width:30px;
+  margin-right:20px ;
+  border: none;
+  background-color: transparent;
+}
+
+.groupchat {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px; 
+}
