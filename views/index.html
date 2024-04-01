@@ -110,9 +110,13 @@ axios.post('/dashboard',loginDetails).then(response => {
             localStorage.setItem('accessToken',response.data.accessToken);
             window.location.href = "/chat"
     }).catch(err => {
-        console.log(JSON.stringify(err))
-        document.body.innerHTML += `<div style="color:red;">${err.message} <div>`;
-    })
+    if (err.response.status === 401) {
+      alert("Incorrect password, please try again!");
+    } else {
+      console.log(JSON.stringify(err));
+      alert(`${err}`);
+    }
+  });
    }
    catch(err){
     console.log('login failed',err);

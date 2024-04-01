@@ -8,7 +8,11 @@ const groupMembers = sequelize.define('groupMembers', {
       }, 
     groupId: {
     type: Sequelize.INTEGER
-  }
+  }, 
+isAdmin: {
+  type: Sequelize.BOOLEAN,
+  defaultValue: false 
+}
 });
 
 // Export the ChatMessage model

@@ -1,0 +1,27 @@
+.removeMembers-container{
+    width:300px;
+    height:300px;
+    border:1px solid red;
+    margin: auto;
+    margin-top:50px; 
+
+}
+
+#removeMembersForm{
+    margin-left: 20px;
+}
+
+.removemembers-btn{
+    border:none;
+    color:white;
+    height: 50px;
+    width:70px;
+    background-color: #0C359E;
+    border-radius: 10px;
+}
+
+#removeMembersForm{
+    margin-left: 20px;
+}
+
+

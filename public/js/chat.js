@@ -6,6 +6,13 @@ async function openNewPage() {
   window.location.href = "/addmembers?groupId=" + groupId;
 }
 
+
+async function openRemoveMembersPage() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const groupId = urlParams.get("groupId");
+  window.location.href = "/removeMembers?groupId=" + groupId;
+}
+
 async function showUserDetails() {
   console.log("Inside the showUserDetails function...");
   try {
@@ -21,7 +28,8 @@ async function showUserDetails() {
       headers: { Authorization: token },
     });
 
-    const groupName = response.data.groupName; // Extract group name from response
+    const groupName = response.data.groupName; 
+    const isAdminUser =response.data.isAdminUser;
 
     // Create a new h2 element for the group name
     const groupChatHeading = document.createElement("h2");
@@ -37,6 +45,7 @@ async function showUserDetails() {
     const userInfo = response.data.users;
 
     console.log("UserInfo....", userInfo);
+    updateButtonVisibility(isAdminUser);
 
     const groupChat = document.getElementById("myTable");
     groupChat.innerHTML = '<h3 style="margin-left: 4px;">Group Members</h3>';
@@ -44,7 +53,28 @@ async function showUserDetails() {
     const table = document.getElementById("myTable");
     const tbody = document.createElement("tbody");
 
-    // Iterate through the array of user details
+    
+    if(isAdminUser)
+      {
+
+        userInfo.forEach((userData) => {
+          const tr = document.createElement("tr");
+    
+          // Create a td element for the name property of each user
+          const td = document.createElement("td");
+          td.textContent = userData.name + " joined";
+           if(!userData.isAdmin){
+           td.addEventListener('click',makeAdmin(userData.id, groupId));
+           }
+
+          tr.appendChild(td);
+    
+          // Append the table row to the table body
+          tbody.appendChild(tr);
+        });
+      }
+      else{
+        // Iterate through the array of user details
     userInfo.forEach((userData) => {
       const tr = document.createElement("tr");
 
@@ -56,10 +86,11 @@ async function showUserDetails() {
       // Append the table row to the table body
       tbody.appendChild(tr);
     });
+      }
 
     // Append the table body to the table
     table.appendChild(tbody);
-
+   
     // Show chat messages
     await fetchAndDisplayNewChatMessages(groupId);
 
@@ -169,4 +200,45 @@ function displayChatMessages(chatMessages) {
 
   // Scroll to the bottom of the messages container
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// function to handle the admin functionality
+function makeAdmin(userId, groupId) {
+  return async function(event) {
+    event.preventDefault();
+    const confirmed = confirm("Are you sure you want to make this user an admin?");
+    if (confirmed) {
+      try {
+        // Send a request to update the user's isAdmin property to true
+        const response = await axios.put(`/${userId}/${groupId}/makeAdmin`);
+
+        // Check if the request was successful
+        if (response.status === 200) {
+          alert("User has been made an admin successfully.");
+          // Optionally, you can update the UI to reflect the user's new admin status
+        } else {
+          alert("Failed to make user an admin.");
+        }
+      } catch (error) {
+        console.error("Error making user an admin:", error);
+        alert("An error occurred while making the user an admin.");
+      }
+    }
+  };
+}
+
+function updateButtonVisibility(isAdmin) {
+
+  console.log("Inside the update button functionality");
+  const addButton = document.getElementById("addbtn");
+  const removeButton = document.getElementById("removebtn");
+
+
+  if (isAdmin) {
+    addButton.style.display = "block";
+    removeButton.style.display = "block";
+  } else {
+    addButton.style.display = "none";
+    removeButton.style.display = "none";
+  }
 }

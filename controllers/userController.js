@@ -92,6 +92,7 @@ exports.postLoginUser = async (req, res, next) => {
             window.location.href = '/';
           </script>
         `);
+        
       }
   
       // Password is valid, user is authenticated
@@ -111,13 +112,13 @@ exports.getUserDetails = async (req, res) => {
         where: { groupId: groupId }
     });
 
-      const userDetails = await GroupMember.findAll(
+      const groupMembers = await GroupMember.findAll(
         {where: { groupId: groupId},
             order: ["createdAt"]   
         }
       )
      
-      const userIds = userDetails.map(userDetail => userDetail.userId);
+      const userIds = groupMembers.map(userDetail => userDetail.userId);
 
       const groupName = groupDetails ? groupDetails.groupName : "Unknown Group";
 
@@ -127,7 +128,9 @@ exports.getUserDetails = async (req, res) => {
           order: ["name"]   
       });
 
-      res.status(200).json({groupName,users,accessToken: generateToken(users.id)})     
+      const isAdminUser = groupMembers.some(member => member.userId === req.user.id && member.isAdmin);;
+
+      res.status(200).json({groupName,users,isAdminUser,accessToken: generateToken(users.id)})     
   } catch (err){
   console.log(err)
   res.status(500).json(err)
@@ -187,6 +190,25 @@ res.status(500).json(err)
 }
   };
 
-
- 
   
+  exports.makeAdmin = async (req, res) => {
+    try {
+      console.log("Inside the makeAdmin function..... ");
+      const userId = req.params.userId;
+      const groupId = req.params.groupId;
+
+      
+      // Update the user's isAdmin property to true
+      await GroupMember.update(
+        { isAdmin: true },
+        { where: { userId: userId, groupId: groupId } }
+      );
+      
+      // Send a success response
+      res.status(200).send("User has been made an admin successfully.");
+    } catch (error) {
+      console.error("Error making user an admin:", error);
+      // Send an error response
+      res.status(500).send("An error occurred while making the user an admin.");
+    }
+  };

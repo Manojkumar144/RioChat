@@ -11,45 +11,47 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
-        <link rel="stylesheet" href="/css/createGroup.css">   
+        <link rel="stylesheet" href="/css/removeMembers.css">   
     </head>
 <body>
-  <div class="creategroup-container">
-    <h2>Create a New Group</h2>
-    <form id="createGroupForm">
-      <label for="groupName">Group Name:</label><br>
-      <input type="text" id="groupName" name="groupName" required><br><br>
+  <div class="removeMembers-container">
+    <h2>Remove Members</h2>
+    <form id="removeMembersForm">
       
-      <label for="members">Add Members (Enter User phone numbers separated by commas):</label><br>
+      <label for="members">Remove Members (Enter User phone numbers separated by commas):</label><br>
       <input type="text" id="members" name="members"><br><br>
   
-      <button type="submit" class="creategrp-btn">Create Group</button>
+      <button type="submit" class="removemembers-btn">Remove</button>
     </form>
     </div>
   
     <script>
-      document.getElementById("createGroupForm").addEventListener("submit", async function(event) {
+      document.getElementById("removeMembersForm").addEventListener("submit", async function(event) {
         event.preventDefault();
-        
-        const groupName = document.getElementById("groupName").value;
         const membersInput = document.getElementById("members").value;
         const members = membersInput.split(',').map(member => member.trim()); // Splitting user IDs by comma and trimming spaces
         
         try {
-          const token = localStorage.getItem('accessToken');
-          console.log("Inside the Create Group Html form the token :", token);
-            const response = await axios.post('/createGroup', {groupName: groupName,
-              members: members }, {
-                headers: { "Authorization": token }
-            });
-            
+        const urlParams = new URLSearchParams(window.location.search);
+           
+            const groupId = urlParams.get('groupId');
+            console.log("Inside the remove members Html  .....")
 
+
+        console.log("group id .....", groupId);
+
+          const token = localStorage.getItem('accessToken');
+          const response = await axios.post(`/removeMembers?groupId=${groupId}`, { members: members }, {
+    headers: { "Authorization": token }
+  });
             if(response){
-            alert('group created successfully!');
+            alert('Members removed successfully!');
             window.location.href='/chat';
-          document.getElementById("groupName").value='';
-          document.getElementById("members").value='';
+        document.getElementById("members").value='';
             }
+
+
+  
         } catch (error) {
           console.error('Error:', error);
           alert('An error occurred. Please try again.');

@@ -10,7 +10,7 @@ router.post('/signUp', userController.postAddUser);
 router.post('/dashboard',userController.postLoginUser);
 
 //api to fetch the userDetails
-router.get('/groupchat',userController.getUserDetails);
+router.get('/groupchat',authenticateMiddleware.authenticateToken,userController.getUserDetails);
 
 router.get('/chat', userController.getChat);
 
@@ -19,5 +19,8 @@ router.post('/chat',authenticateMiddleware.authenticateToken,userController.post
 
 //api to get the chat messages of the user 
 router.get('/chatmessage',authenticateMiddleware.authenticateToken, userController.getChatMessages);
+
+//to update other members as admin
+router.put('/:userId/:groupId/makeAdmin', userController.makeAdmin);
 
 module.exports = router;

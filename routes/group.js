@@ -4,7 +4,7 @@ const groupController = require('../controllers/groupController');
 const authenticateMiddleware = require('../middleware/auth');
 
 // api to handle creation of user details
-router.post('/createGroup', groupController.CreateGroup);
+router.post('/createGroup', authenticateMiddleware.authenticateToken, groupController.CreateGroup);
 
 router.get('/createGroupForm', groupController.getCreateGroupForm);
 
@@ -14,10 +14,10 @@ router.get('/getChatMessages/:groupId?', groupController.getChatMessagePage);
 
 router.get('/addmembers/:groupId?', groupController.getAddMembers);
 
-
-// router.get('/addmembers', groupController.getAddMembers);
+router.get('/removemembers/:groupId?', groupController.getRemoveMembersPage);
 
 router.post('/addmembers', groupController.postAddMembers);
 
+router.post('/removeMembers', groupController.deleteGroupMembers);
 
 module.exports = router;
