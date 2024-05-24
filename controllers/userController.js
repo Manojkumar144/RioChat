@@ -182,7 +182,6 @@ exports.getChatMessages = async (req, res) => {
       groupId: groupId},
         order: ["createdAt"]   
     })
-    console.log(" all the chat messages...",chatMessages);
     res.status(200).json({chatMessages:chatMessages})     
 } catch (err){
 console.log(err)

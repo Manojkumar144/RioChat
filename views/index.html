@@ -107,7 +107,10 @@
 
 axios.post('/dashboard',loginDetails).then(response => {
             alert(response.data.message)
-            localStorage.setItem('accessToken',response.data.accessToken);
+            console.log("Inside the /dasboard function of index.html ...response :", response.data);
+            sessionStorage.setItem('accessToken', response.data.accessToken);
+             sessionStorage.setItem('username', response.data.name);
+
             window.location.href = "/chat"
     }).catch(err => {
     if (err.response.status === 401) {

@@ -1,1 +1,3 @@
 .env
+public/js/chatdummy.js
+node_modules

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="images/logo.png" type="image/x-icon">
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="css/resetStyles.css" />
+</head>
+<body>
+
+<div class="container">
+    <form id="forgot-password-form" onsubmit="forgotPassword(event)">
+        <h2>Forgot Password?</h2>
+        <small>Enter your email and we'll send you a link to reset your password to your email.</small>  
+        <input type="email" id="email" placeholder="Your email">
+        <button type="submit">Submit</button>  
+        <a href="/">Back to Login</a>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    
+    async function forgotPassword(event){
+    event.preventDefault();
+    try {
+        const email = document.getElementById('email').value;
+        console.log(email);
+        let res = await axios.post(`/forgotpassword`, {email: email});
+        if(res.status === 200) {
+            confirm(`${res.data.message}`);
+            window.location.href = '/';
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+</script>
+</body>
+</html>

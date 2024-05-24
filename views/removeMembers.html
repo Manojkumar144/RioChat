@@ -40,7 +40,7 @@
 
         console.log("group id .....", groupId);
 
-          const token = localStorage.getItem('accessToken');
+          const token = sessionStorage.getItem('accessToken');
           const response = await axios.post(`/removeMembers?groupId=${groupId}`, { members: members }, {
     headers: { "Authorization": token }
   });

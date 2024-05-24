@@ -36,7 +36,7 @@
         const members = membersInput.split(',').map(member => member.trim()); // Splitting user IDs by comma and trimming spaces
         
         try {
-          const token = localStorage.getItem('accessToken');
+          const token = sessionStorage.getItem('accessToken');
           console.log("Inside the Create Group Html form the token :", token);
             const response = await axios.post('/createGroup', {groupName: groupName,
               members: members }, {

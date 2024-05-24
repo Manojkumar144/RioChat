@@ -34,7 +34,7 @@
 
         window.onload = async function() {
         try {
-            const token = localStorage.getItem('accessToken');
+            const token = sessionStorage.getItem('accessToken');
             const response = await axios.get('/user/groups', {
             headers: { "Authorization": token }});
             const userGroups = response.data.groupDetails;

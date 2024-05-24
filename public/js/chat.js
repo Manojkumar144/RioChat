@@ -1,11 +1,12 @@
 window.addEventListener("load", showUserDetails);
 
+const socket = io();
+
 async function openNewPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const groupId = urlParams.get("groupId");
   window.location.href = "/addmembers?groupId=" + groupId;
 }
-
 
 async function openRemoveMembersPage() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -16,7 +17,7 @@ async function openRemoveMembersPage() {
 async function showUserDetails() {
   console.log("Inside the showUserDetails function...");
   try {
-    const token = localStorage.getItem("accessToken");
+    const token = sessionStorage.getItem("accessToken");
     console.log("token.......", token);
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get("groupId");
@@ -30,6 +31,8 @@ async function showUserDetails() {
 
     const groupName = response.data.groupName; 
     const isAdminUser =response.data.isAdminUser;
+
+    console.log("Inside the show user details.....response:",response.data);
 
     // Create a new h2 element for the group name
     const groupChatHeading = document.createElement("h2");
@@ -108,9 +111,16 @@ async function setupChatForm(groupId) {
   chatForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const chatInput = document.getElementById("chatInput").value;
+    const username = sessionStorage.getItem('username');
+    // const message = chatInput.value.trim();
+    if (chatInput) {
+      // Emit the message to the server
+      socket.emit("chat message", { groupId, chatInput,username });
+      chatInput.value = "";
+    }
 
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = sessionStorage.getItem("accessToken");
       const response = await axios.post(
         "/chat",
         { chat: chatInput, groupId: groupId },
@@ -138,7 +148,7 @@ async function fetchAndDisplayNewChatMessages(groupId) {
 
     // Fetch last stored message ID from local storage
     const lastStoredMessageId = localStorage.getItem("lastMessageId");
-    const token = localStorage.getItem("accessToken");
+    const token = sessionStorage.getItem("accessToken");
 
     // Fetch new chat messages since the last stored message
     const response = await axios.get("/chatmessage", {
@@ -241,4 +251,30 @@ function updateButtonVisibility(isAdmin) {
     addButton.style.display = "none";
     removeButton.style.display = "none";
   }
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const groupId = urlParams.get("groupId");
+socket.emit("join group", groupId);
+
+// Listen for incoming chat messages from the server
+socket.on("chat message", (message) => {
+  // Update the UI to display the new message
+  displayNewMessage(message);
+});
+
+function displayNewMessage(message) {
+  const messagesContainer = document.getElementById("messages");
+  const username = message.name;
+  const msgText = message.message;
+
+  const ul = document.createElement("ul");
+  const li = document.createElement("li");
+  li.innerHTML = `${username}: ${msgText}`;
+
+  ul.appendChild(li);
+  messagesContainer.appendChild(ul);
+
+  // Scroll to the bottom of the messages container
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
